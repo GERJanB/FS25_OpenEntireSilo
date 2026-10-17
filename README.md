@@ -1,12 +1,14 @@
 # FS25_OpenEntireSilo
 
-Mod für FS25, um ein Fahrsilo komplett zu öffnen.
+**Silo komplett öffnen** – ein Mod für den Landwirtschafts-Simulator 25.
 
-Im Basisspiel öffnet der Knopf „Silo öffnen“ nur den ersten Abschnitt, der Rest wird erst beim Entnehmen Stück für Stück freigelegt. Mit diesem Mod öffnet derselbe Knopf sofort das ganze Silo. Das gilt für alle Fahrsilos, die die Basisklasse `BunkerSilo` nutzen (Basisspiel, Karten, Mods), auch im Multiplayer.
+Im Spiel öffnet „Silo öffnen“ bei einem Fahrsilo nur den vorderen Teil. Den Rest gibt das Spiel erst nach und nach frei, während du Silage entnimmst. Mit diesem Mod ist das ganze Silo sofort offen, sobald du den Knopf drückst, und die komplette Silage ist sofort verfügbar. Das funktioniert auf allen Karten, auch mit Fahrsilos aus anderen Mods und im Multiplayer.
 
-**Stand:** Version 1.0.0.0, erstes vollständiges Release. Funktion umgesetzt, mit Unit-Tests abgedeckt und im Spiel getestet. Die fertige ZIP gibt es unter [Releases](https://github.com/GERJanB/FS25_OpenEntireSilo/releases), alternativ lässt sie sich mit `build.sh` selbst bauen (siehe [Bauen und lokal installieren](#bauen-und-lokal-installieren)).
+Aktuelle Version: 1.0.0.0, zum Herunterladen unter [Releases](https://github.com/GERJanB/FS25_OpenEntireSilo/releases).
 
-## Funktionsweise
+## Für Entwickler
+
+### Funktionsweise
 
 `scripts/OpenEntireSilo.lua` hängt sich schon beim Laden der Skriptdatei, also vor dem Laden der Karte, an die Spielklasse `BunkerSilo`. `setState` wird per `Utils.appendedFunction` ergänzt, die übrigen drei Funktionen per `Utils.overwrittenFunction`:
 
@@ -17,7 +19,7 @@ Im Basisspiel öffnet der Knopf „Silo öffnen“ nur den ersten Abschnitt, der
 
 Der Mod-Event-Listener (`loadMap`) schreibt nur eine Meldung ins Log.
 
-## Aufbau
+### Aufbau
 
 ```
 modDesc.xml                  Einstieg für das Spiel (Titel, Beschreibung, Version, Skript)
@@ -31,14 +33,14 @@ tests/helpers/fs25_stubs.lua Nachbau der Spiel-Globals für die Tests
 LICENSE                      GPL-3.0
 ```
 
-## Bauen und lokal installieren
+### Bauen und lokal installieren
 
 Mod-Ordner des Spiels:
 - Windows: `Dokumente\My Games\FarmingSimulator2025\mods`
 - Linux mit Steam/Proton: `~/.local/share/Steam/steamapps/compatdata/2300320/pfx/drive_c/users/steamuser/Documents/My Games/FarmingSimulator2025/mods`
 
 **Als ZIP (wie veröffentlicht):**
-1. Die ZIP aus dem neuesten [Release](https://github.com/GERJanB/FS25_OpenEntireSilo/releases/latest) herunterladen oder im Repo-Wurzelordner `./build.sh` ausführen (braucht `zip`). Ergebnis: `dist/FS25_OpenEntireSilo.zip`.
+1. Im Repo-Wurzelordner `./build.sh` ausführen (braucht `zip`). Ergebnis: `dist/FS25_OpenEntireSilo.zip`.
 2. Die ZIP-Datei ungeöffnet in den Mod-Ordner kopieren.
 
 Ins ZIP kommen nur die Einträge der `INCLUDE`-Liste in `build.sh` (`modDesc.xml`, Icon, `scripts/`, `translations/`). `tests/`, `.busted`, `.luacheckrc`, README und LICENSE bleiben draußen, ebenso versteckte Dateien und Editor-Reste.
@@ -51,7 +53,7 @@ Nie Ordner und ZIP gleichzeitig im Mod-Ordner haben, sonst ist der Mod doppelt v
 
 Danach Spiel starten, den Mod beim Laden bzw. Anlegen des Spielstands auswählen und in der `log.txt` (liegt im Ordner `FarmingSimulator2025` neben `mods`) nach `[FS25_OpenEntireSilo] Mod geladen, Fahrsilos werden komplett geöffnet` suchen.
 
-## Tests
+### Tests
 
 Unit-Tests mit [busted](https://lunarmodules.github.io/busted/), Linter [luacheck](https://github.com/lunarmodules/luacheck), beide unter Lua 5.1. Die Spielfunktionen (`BunkerSilo`, `Utils`, `DensityMapHeightUtil` usw.) sind in `tests/helpers/fs25_stubs.lua` nachgebaut und schreiben ihre Aufrufe mit, das Spiel selbst wird nicht gebraucht. Skripte bleiben deshalb in Lua-5.1-Syntax (kein `+=`, kein `continue`).
 
