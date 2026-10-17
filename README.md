@@ -4,7 +4,7 @@ Mod für FS25, um ein Fahrsilo komplett zu öffnen.
 
 Im Basisspiel öffnet der Knopf „Silo öffnen“ nur den ersten Abschnitt, der Rest wird erst beim Entnehmen Stück für Stück freigelegt. Mit diesem Mod öffnet derselbe Knopf sofort das ganze Silo. Das gilt für alle Fahrsilos, die die Basisklasse `BunkerSilo` nutzen (Basisspiel, Karten, Mods), auch im Multiplayer.
 
-**Stand:** Version 0.2.0.0. Funktion umgesetzt und mit Unit-Tests abgedeckt, noch nicht im Spiel getestet. Es gibt noch keine fertige ZIP zum Herunterladen, sie wird mit `build.sh` selbst gebaut (siehe [Bauen und lokal installieren](#bauen-und-lokal-installieren)).
+**Stand:** Version 1.0.0.0, erstes vollständiges Release. Funktion umgesetzt, mit Unit-Tests abgedeckt und im Spiel getestet. Die fertige ZIP gibt es unter [Releases](https://github.com/GERJanB/FS25_OpenEntireSilo/releases), alternativ lässt sie sich mit `build.sh` selbst bauen (siehe [Bauen und lokal installieren](#bauen-und-lokal-installieren)).
 
 ## Funktionsweise
 
@@ -38,7 +38,7 @@ Mod-Ordner des Spiels:
 - Linux mit Steam/Proton: `~/.local/share/Steam/steamapps/compatdata/2300320/pfx/drive_c/users/steamuser/Documents/My Games/FarmingSimulator2025/mods`
 
 **Als ZIP (wie veröffentlicht):**
-1. Im Repo-Wurzelordner `./build.sh` ausführen (braucht `zip`). Ergebnis: `dist/FS25_OpenEntireSilo.zip`.
+1. Die ZIP aus dem neuesten [Release](https://github.com/GERJanB/FS25_OpenEntireSilo/releases/latest) herunterladen oder im Repo-Wurzelordner `./build.sh` ausführen (braucht `zip`). Ergebnis: `dist/FS25_OpenEntireSilo.zip`.
 2. Die ZIP-Datei ungeöffnet in den Mod-Ordner kopieren.
 
 Ins ZIP kommen nur die Einträge der `INCLUDE`-Liste in `build.sh` (`modDesc.xml`, Icon, `scripts/`, `translations/`). `tests/`, `.busted`, `.luacheckrc`, README und LICENSE bleiben draußen, ebenso versteckte Dateien und Editor-Reste.
