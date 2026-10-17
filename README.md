@@ -4,15 +4,16 @@ Mod für FS25, um ein Fahrsilo komplett zu öffnen.
 
 Im Basisspiel öffnet der Knopf „Silo öffnen" nur den ersten Abschnitt, der Rest wird erst beim Entnehmen Stück für Stück freigelegt. Mit diesem Mod öffnet derselbe Knopf sofort das ganze Silo. Das gilt für alle Fahrsilos, die die Basisklasse `BunkerSilo` nutzen (Basisspiel, Karten, Mods), auch im Multiplayer.
 
-**Stand:** Funktion umgesetzt, noch nicht im Spiel getestet.
+**Stand:** Version 0.2.0.0. Funktion umgesetzt und mit Unit-Tests abgedeckt, noch nicht im Spiel getestet.
 
 ## Funktionsweise
 
-`scripts/OpenEntireSilo.lua` erweitert die Spielklasse `BunkerSilo` per `Utils.overwrittenFunction` bzw. `Utils.appendedFunction`:
+`scripts/OpenEntireSilo.lua` hängt sich schon beim Laden der Skriptdatei, also vor dem Laden der Karte, an die Spielklasse `BunkerSilo`. `setState` wird per `Utils.appendedFunction` ergänzt, die übrigen drei Funktionen per `Utils.overwrittenFunction`:
 
-- `openSilo`: Nach dem Öffnen durch das Spiel wird der ganze Siloinhalt (gärend und liegengebliebenes Häckselgut) in Silage umgewandelt und beide Seiten als offen markiert. Läuft nur auf dem Server, die Höhenkarte und die Flags synchronisiert das Spiel.
+- `openSilo`: Nach dem Öffnen durch das Spiel wird der ganze Siloinhalt (gärend und nach dem Abdecken noch obenauf gekipptes Häckselgut) in Silage umgewandelt und beide Seiten als offen markiert. Das passiert nur auf dem Server, nur wenn das Silo danach im Zustand „offen" (`STATE_DRAIN`) ist und nur, wenn es vorher nicht schon an beiden Seiten offen war. Höhenkarte und Flags synchronisiert das Spiel an die Clients.
 - `onChangedFillLevelCallback`: Bei einem komplett geöffneten Silo wird die Öffnungskante nicht mehr weitergeschoben.
-- `loadFromXMLFile` / `setState`: Leiten das Merkfeld „komplett geöffnet" beim Laden ab bzw. setzen es zurück, wenn das Silo leer ist oder wieder befüllt wird.
+- `loadFromXMLFile`: Das Merkfeld „komplett geöffnet" wird nicht im Spielstand gespeichert, sondern beim Laden abgeleitet: Silo offen, an beiden Seiten geöffnet und kein gärender Inhalt mehr. Ein ohne den Mod von beiden Enden geöffnetes Silo mit gärendem Rest zählt deshalb nicht als komplett geöffnet.
+- `setState`: Setzt das Merkfeld zurück, sobald das Silo den Zustand „offen" verlässt (leer oder wieder befüllt).
 
 Skripte bleiben in Lua-5.1-Syntax (kein `+=`, kein `continue`), damit busted und luacheck laufen (siehe [Tests](#tests)).
 
@@ -20,7 +21,7 @@ Skripte bleiben in Lua-5.1-Syntax (kein `+=`, kein `continue`), damit busted und
 
 ```
 modDesc.xml                  Einstieg für das Spiel (Titel, Version, Skripte, Übersetzungen)
-icon_OpenEntireSilo.dds      Mod-Icon (Platzhalter, 512x512)
+icon_OpenEntireSilo.dds      Mod-Icon (512x512, DXT5 mit Mipmaps)
 scripts/OpenEntireSilo.lua   Haupt-Skript (globaler Mod Event Listener)
 translations/                Übersetzungen (de, en)
 build.sh                     Packt den Mod als ZIP nach dist/
@@ -43,7 +44,7 @@ Mod-Ordner des Spiels:
 `ln -s ~/Dev/fsModding/FS25_OpenEntireSilo "<Mod-Ordner>/FS25_OpenEntireSilo"`.
 Nie Ordner und ZIP gleichzeitig im Mod-Ordner haben, sonst ist der Mod doppelt vorhanden.
 
-Danach Spiel starten, Mod im Spielstand aktivieren und in der `log.txt` nach `[FS25_OpenEntireSilo] Mod geladen` suchen.
+Danach Spiel starten, Mod im Spielstand aktivieren und in der `log.txt` nach `[FS25_OpenEntireSilo] Mod geladen, Fahrsilos werden komplett geöffnet` suchen.
 
 Der Ordner- bzw. ZIP-Name muss `FS25_OpenEntireSilo` bleiben, er ist zugleich der Mod-Name im Code.
 
