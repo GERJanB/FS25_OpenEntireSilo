@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="114">
     <author>Jan</author>
-    <version>0.1.0.0</version>
+    <version>0.2.0.0</version>
     <title>
         <en>Open Entire Silo</en>
         <de>Silo komplett öffnen</de>
     </title>
     <description>
-        <en><![CDATA[Opens a silo completely.
-
-Work in progress: the mod does not have any functionality yet.]]></en>
-        <de><![CDATA[Öffnet ein Silo komplett.
-
-In Arbeit: Der Mod hat noch keine Funktion.]]></de>
+        <en><![CDATA[Opens a bunker silo completely with the "Open silo" button, instead of only the first section. Works for all bunker silos that use the base game logic (base game, maps and mods). Multiplayer compatible.]]></en>
+        <de><![CDATA[Öffnet ein Fahrsilo mit dem Knopf "Silo öffnen" sofort komplett statt nur den ersten Abschnitt. Gilt für alle Fahrsilos, die die Logik des Basisspiels nutzen (Basisspiel, Karten und Mods). Multiplayer-fähig.]]></de>
     </description>
     <iconFilename>icon_OpenEntireSilo.dds</iconFilename>
     <multiplayer supported="true"/>
