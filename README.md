@@ -51,7 +51,7 @@ Der Ordner- bzw. ZIP-Name muss `FS25_OpenEntireSilo` bleiben, er ist zugleich de
 
 Unit-Tests mit [busted](https://lunarmodules.github.io/busted/), Linter [luacheck](https://github.com/lunarmodules/luacheck), beide unter Lua 5.1. Die Spielfunktionen (`BunkerSilo`, `Utils`, `DensityMapHeightUtil` usw.) sind in `tests/helpers/fs25_stubs.lua` nachgebaut und schreiben ihre Aufrufe mit, das Spiel selbst wird nicht gebraucht.
 
-Einmalig installieren (braucht `lua5.1` und `luarocks`):
+Einmalig installieren (braucht Lua 5.1 samt Headern und `luarocks`, z. B. unter Arch `lua51` und `luarocks`, unter Debian/Ubuntu `lua5.1`, `liblua5.1-0-dev` und `luarocks`; busted baut einige C-Module):
 
 ```bash
 luarocks --local --lua-version=5.1 install busted
