@@ -1,0 +1,10 @@
+-- Konfiguration für busted, Aufruf im Repo-Wurzelordner: busted
+return {
+    default = {
+        ROOT = { "tests" },
+        pattern = "_spec",
+        -- damit require("tests.helpers.fs25_stubs") vom Repo-Wurzelordner aus funktioniert
+        lpath = "./?.lua",
+        verbose = true,
+    },
+}
