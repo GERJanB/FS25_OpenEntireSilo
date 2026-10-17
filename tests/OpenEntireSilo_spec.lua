@@ -25,7 +25,8 @@ describe("OpenEntireSilo", function()
         it("merkt sich Mod-Name und -Ordner und meldet sich als Mod Event Listener an", function()
             assert.are.equal(stubs.MOD_NAME, OpenEntireSilo.MOD_NAME)
             assert.are.equal(stubs.MOD_DIRECTORY, OpenEntireSilo.MOD_DIRECTORY)
-            assert.are.same({ OpenEntireSilo }, stubs.modEventListeners)
+            assert.are.equal(1, #stubs.modEventListeners)
+            assert.are.equal(OpenEntireSilo, stubs.modEventListeners[1])
         end)
 
         it("hängt die Hooks an BunkerSilo", function()
@@ -52,11 +53,18 @@ describe("OpenEntireSilo", function()
     describe("BunkerSilo:openSilo", function()
         local silo
 
+        -- nur das Original lief, der Mod hat nichts umgewandelt und nichts synchronisiert
+        local function assertOnlyOriginalRan()
+            assert.are.equal(1, #stubs.callsTo("BunkerSilo.openSilo"))
+            assert.are.equal(0, #stubs.callsTo("DensityMapHeightUtil.changeFillTypeAtArea"))
+            assert.are.equal(0, #stubs.callsTo("BunkerSilo.raiseDirtyFlags"))
+        end
+
         before_each(function()
-            -- wie im Spiel: das Original öffnet das gegärte Silo vorne
+            -- wie im Spiel: das Original setzt DRAIN und öffnet das gegärte Silo vorne
             silo = stubs.newSilo({ state = BunkerSilo.STATE_FERMENTED, isOpenedAtFront = false })
             stubs.onOriginalOpenSilo = function(self)
-                self.state = BunkerSilo.STATE_DRAIN
+                self:setState(BunkerSilo.STATE_DRAIN, true)
                 self.isOpenedAtFront = true
             end
         end)
@@ -97,18 +105,18 @@ describe("OpenEntireSilo", function()
 
             silo:openSilo(10, 20, 30)
 
-            assert.are.equal(1, #stubs.calls)
-            assert.are.equal("BunkerSilo.openSilo", stubs.calls[1].name)
+            assertOnlyOriginalRan()
             assert.is_false(silo.isOpenedAtBack)
             assert.is_nil(silo.oesFullyOpened)
         end)
 
         it("tut nichts, wenn das Silo danach nicht im Zustand DRAIN ist", function()
-            stubs.onOriginalOpenSilo = nil -- z. B. noch nicht fertig gegärt
+            -- im Spiel setzt das Original immer DRAIN, geprüft wird die Schutzabfrage im Hook
+            stubs.onOriginalOpenSilo = nil
 
             silo:openSilo(10, 20, 30)
 
-            assert.are.equal(1, #stubs.calls)
+            assertOnlyOriginalRan()
             assert.is_false(silo.isOpenedAtBack)
             assert.is_nil(silo.oesFullyOpened)
         end)
@@ -118,12 +126,16 @@ describe("OpenEntireSilo", function()
 
             silo:openSilo(10, 20, 30)
 
-            assert.are.equal(1, #stubs.calls)
-            assert.are.equal("BunkerSilo.openSilo", stubs.calls[1].name)
+            assertOnlyOriginalRan()
         end)
 
         it("öffnet ein nur hinten offenes Silo trotzdem komplett", function()
-            silo = stubs.newSilo({ isOpenedAtFront = false, isOpenedAtBack = true })
+            -- das Original öffnet nur hinten, die Vorderseite bleibt zu
+            silo = stubs.newSilo({ state = BunkerSilo.STATE_FERMENTED, isOpenedAtFront = false })
+            stubs.onOriginalOpenSilo = function(self)
+                self:setState(BunkerSilo.STATE_DRAIN, true)
+                self.isOpenedAtBack = true
+            end
 
             silo:openSilo(10, 20, 30)
 
@@ -191,8 +203,16 @@ describe("OpenEntireSilo", function()
             assert.is_falsy(silo.oesFullyOpened)
         end)
 
-        it("gilt nicht als komplett geöffnet, wenn nur eine Seite offen ist", function()
+        it("gilt nicht als komplett geöffnet, wenn nur vorne offen ist", function()
             local silo = stubs.newSilo()
+
+            load(silo)
+
+            assert.is_falsy(silo.oesFullyOpened)
+        end)
+
+        it("gilt nicht als komplett geöffnet, wenn nur hinten offen ist", function()
+            local silo = stubs.newSilo({ isOpenedAtFront = false, isOpenedAtBack = true })
 
             load(silo)
 
