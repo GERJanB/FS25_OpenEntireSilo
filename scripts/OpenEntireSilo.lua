@@ -102,7 +102,7 @@ end
 OpenEntireSilo.installHooks()
 
 -- Karte geladen, g_currentMission existiert
-function OpenEntireSilo:loadMap(filename)
+function OpenEntireSilo:loadMap(_filename)
     Logging.info("[%s] Mod geladen, Fahrsilos werden komplett geöffnet", OpenEntireSilo.MOD_NAME)
 end
 
