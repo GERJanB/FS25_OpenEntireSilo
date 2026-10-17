@@ -2,7 +2,7 @@
 
 **Silo komplett öffnen** – ein Mod für den Landwirtschafts-Simulator 25.
 
-Im Spiel öffnet „Silo öffnen“ bei einem Fahrsilo nur den vorderen Teil. Den Rest gibt das Spiel erst nach und nach frei, während du Silage entnimmst. Mit diesem Mod ist das ganze Silo sofort offen, sobald du den Knopf drückst, und die komplette Silage ist sofort verfügbar. Das funktioniert auf allen Karten, auch mit Fahrsilos aus anderen Mods und im Multiplayer.
+Im Spiel öffnet „Silo öffnen“ bei einem Fahrsilo nur den ersten Abschnitt an der Seite, an der du stehst. Den Rest gibt das Spiel erst nach und nach frei, während du Silage entnimmst. Mit diesem Mod ist das ganze Silo sofort offen, sobald du den Knopf drückst, und die komplette Silage ist sofort verfügbar. Das funktioniert auf allen Karten, auch mit den üblichen Fahrsilos aus anderen Mods und im Multiplayer.
 
 Aktuelle Version: 1.0.0.0, zum Herunterladen unter [Releases](https://github.com/GERJanB/FS25_OpenEntireSilo/releases).
 
